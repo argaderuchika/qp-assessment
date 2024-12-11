@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Node.js Application Service
+  app:
+    build: .
+    container_name: grocery_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=grocery_booking
+
+  # MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: grocery_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: grocery_booking
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+# Named volume for persisting database data
+volumes:
+  db_data:
